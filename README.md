@@ -21,27 +21,27 @@ An extended React hooks library for the [Frappe Framework](https://frappeframewo
 Initialize `frappe-react-hooks` by wrapping your application's root component with `FrappeProvider`, specifying the URL of your Frappe server and default SWR configuration as needed:
 
 ```bash
-function  App() { 
-	return ( 
-		<FrappeProvider 
-			url="https://my-frappe-server.frappe.cloud" 
-			swrConfig={{ 
-				refreshInterval: 3000, 
-				dedupingInterval: 2000, 
-				{/* Other configurations go here */} 
-			}}> 
-			{/* Application components go here */} 
-		</FrappeProvider> 
-	); 
+function App() {
+    return (
+        <FrappeProvider
+            url="https://my-frappe-server.frappe.cloud"
+            swrConfig={{
+                refreshInterval: 3000,
+                dedupingInterval: 2000, 
+		{/* Other configurations go here */} 
+	    }}>
+	     {/* Application components go here */ } 
+	</FrappeProvider > 
+    ); 
 }
 ```
 `frappe-react-hooks` integrates predefined SWR configurations to streamline the data fetching experience. These settings are designed to optimize performance and user experience by modifying the default SWR behavior:
 ```bash
 {
-	revalidateOnFocus:  false,
-	revalidateIfStale:  false,
-	shouldRetryOnError:  false,
-	suspense:  false
+   revalidateOnFocus:  false,
+   revalidateIfStale:  false,
+   shouldRetryOnError:  false,
+   suspense:  false
 }
 ```
 ## Real-time User Validation
