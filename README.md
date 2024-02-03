@@ -52,7 +52,7 @@ const { currentUser } = useFrappeAuth({}, {realtimeUserValidation: true});
 This feature enhances security and maintains a consistent user experience by ensuring that user sessions are accurately managed.
 
 ## Documentation
-For detailed API usage and guidelines, refer to the [`frappe-react-sdk` documentation](https://github.com/nikkothari22/frappe-react-sdk). `frappe-react-hooks` maintains compatibility with `frappe-react-sdk` while extending its capabilities.
+For detailed API usage and guidelines, refer to the `frappe-react-sdk` [documentation](https://github.com/nikkothari22/frappe-react-sdk). `frappe-react-hooks` maintains compatibility with `frappe-react-sdk` while extending its capabilities.
 
 ## Installation
 
