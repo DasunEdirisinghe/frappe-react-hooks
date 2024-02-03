@@ -1,12 +1,21 @@
 {
   "name": "frappe-react-hooks",
   "description": "Extended version of frappe-react-sdk with more features and improvements",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "author": {
     "name": "Dasun Edirisinghe",
     "email": "edirisinghe954@gmail.com"
   },
+  "bugs": {
+    "url": "https://github.com/DasunEdirisinghe/frappe-react-hooks/issues"
+  },
+  "homepage": "https://github.com/DasunEdirisinghe/frappe-react-hooks#readme",
+  "keywords": [
+    "Frappe",
+    "React",
+    "hooks"
+  ],
   "files": [
     "dist",
     "README.md"
@@ -41,6 +50,10 @@
   },
   "peerDependencies": {
     "react": ">=17.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DasunEdirisinghe/frappe-react-hooks.git"
   },
   "devDependencies": {
     "@testing-library/dom": "^8.17.1",
