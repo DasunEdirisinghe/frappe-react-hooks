@@ -11,6 +11,7 @@ import { FileArgs } from 'frappe-js-sdk/lib/file/types';
 import { Socket } from "socket.io-client";
 import { SocketIO } from "./socket";
 import { AuthCredentials, AuthResponse, OTPCredentials, UserPassCredentials } from "frappe-js-sdk/lib/auth/types";
+import axios from "axios";
 
 export type { SWRConfiguration, SWRResponse, Key }
 export { useSWR, useSWRConfig }
@@ -93,6 +94,7 @@ export const FrappeProvider = ({ url = "", tokenParams, socketPort, siteName, en
 
 interface FrappeAuthConfig {
     realtimeUserValidation?: boolean
+    userCheckMethod?: string
 }
 
 /**
@@ -150,14 +152,29 @@ export const useFrappeAuth = (options?: SWRConfiguration, configs?: FrappeAuthCo
 
     }, [])
 
+    function getLoggedInUser(url: string, method: string): Promise<string> {
+        return axios
+          .get(`${url}/api/method/${method}`, {withCredentials: true})
+          .then((res) => res.data.message)
+          .catch((error) => {
+            throw {
+              ...error.response.data,
+              httpStatus: error.response.status,
+              httpStatusText: error.response.statusText,
+              message: 'There was an error while fetching the logged in user',
+              exception: error.response.data.exception ?? '',
+            } as Error;
+          });
+      }
+
     const { data: currentUser, error, isLoading, isValidating, mutate: updateCurrentUser } = useSWR<string | null, Error>(
         () => {
             if ((tokenParams && tokenParams.useToken) || userID || configs?.realtimeUserValidation) {
-                return `${url}/api/method/frappe.auth.get_logged_user`
+                return `${url}/api/method/${configs?.userCheckMethod ? configs.userCheckMethod : 'frappe.realtime.get_user_info'}`
             } else {
                 return null
             }
-        }, () => auth.getLoggedInUser(), {
+        }, () => getLoggedInUser(url, configs?.userCheckMethod ? configs.userCheckMethod : 'frappe.realtime.get_user_info'), {
         onError: () => {
             setUserID(null)
         },
