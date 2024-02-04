@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/lib/index.tsx'),
       name: 'Frappe React',
-      fileName: (format) => `frappe-react-utils.${format}.js`
+      fileName: (format) => `frappe-react-hooks.${format}.js`
     },
     rollupOptions: {
       external: ['react', 'react-dom'],
