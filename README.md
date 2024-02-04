@@ -45,9 +45,9 @@ function App() {
 }
 ```
 ## Real-time User Validation
-`frappe-react-hooks` introduces **Real-time User Validation**, which actively validates the user's authentication status by executing   `frappe.auth.get_logged_user`, enabled with `{realtimeUserValidation: true}`. It ensures the application's user state is always current by executing `frappe.auth.get_logged_user`.
+`frappe-react-hooks` introduces **Real-time User Validation**, which actively validates the user's authentication status by executing   `frappe.realtime.get_user_info`, enabled with `{realtimeUserValidation: true}`. It ensures the application's user state is always current by executing `frappe.realtime.get_user_info`. Or you can pass a custom auth check method to override default `frappe.realtime.get_user_info` user check method
 ```bash
-const { currentUser } = useFrappeAuth({}, {realtimeUserValidation: true});
+const { currentUser } = useFrappeAuth({}, {realtimeUserValidation: true, method: // Optional custom user check method});
 ```
 This feature enhances security and maintains a consistent user experience by ensuring that user sessions are accurately managed.
 
