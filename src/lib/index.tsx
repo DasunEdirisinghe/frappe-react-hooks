@@ -12,6 +12,7 @@ import { Socket } from "socket.io-client";
 import { SocketIO } from "./socket";
 import { AuthCredentials, AuthResponse, OTPCredentials, UserPassCredentials } from "frappe-js-sdk/lib/auth/types";
 import axios from "axios";
+import { cache, internalMutate, mutate } from "swr/_internal";
 
 export type { SWRConfiguration, SWRResponse, Key }
 export { useSWR, useSWRConfig }
@@ -40,6 +41,10 @@ export interface TokenParams {
 }
 
 export const FrappeContext = createContext<null | FrappeConfig>(null)
+
+export type InvalidationConfig = {
+    invalidateKeys?: string[]
+}
 
 type FrappeProviderProps = PropsWithChildren<{
     url?: string,
@@ -318,9 +323,10 @@ export const useFrappeGetDocList = <T = any, K = FrappeDoc<T>>(doctype: string, 
 
 /**
  * Hook to create a document in the database and maintain loading and error states
+ * @param invalidationConfig - [Optional] InvalidationConfig options for invalidating cache using swr keys
  * @returns Object with the following properties: loading, error, isCompleted and createDoc and reset functions
  */
-export const useFrappeCreateDoc = <T = any,>(): {
+export const useFrappeCreateDoc = <T = any,>(invalidationConfig?: InvalidationConfig): {
     /** Function to create a document in the database */
     createDoc: (doctype: string, doc: T) => Promise<FrappeDoc<T>>,
     /** Will be true when the API request is pending.  */
@@ -338,8 +344,6 @@ export const useFrappeCreateDoc = <T = any,>(): {
     const [error, setError] = useState<Error | null>(null)
     const [isCompleted, setIsCompleted] = useState(false)
 
-
-
     const reset = useCallback(() => {
         setLoading(false)
         setError(null)
@@ -355,6 +359,9 @@ export const useFrappeCreateDoc = <T = any,>(): {
             .then((document) => {
                 setLoading(false)
                 setIsCompleted(true)
+                
+                keyInvalidator(invalidationConfig?.invalidateKeys || []);
+                
                 return document
             })
             .catch((error) => {
@@ -376,9 +383,10 @@ export const useFrappeCreateDoc = <T = any,>(): {
 
 /**
  * Hook to update a document in the database and maintain loading and error states
+ * @param invalidationConfig - [Optional] InvalidationConfig options for invalidating cache using swr keys
  * @returns Object with the following properties: loading, error, isCompleted and updateDoc and reset functions
  */
-export const useFrappeUpdateDoc = <T = any,>(): {
+export const useFrappeUpdateDoc = <T = any,>(invalidationConfig?: InvalidationConfig): {
     /** Function to update a document in the database */
     updateDoc: (doctype: string, docname: string | null, doc: Partial<T>) => Promise<FrappeDoc<T>>,
     /** Will be true when the API request is pending.  */
@@ -412,6 +420,7 @@ export const useFrappeUpdateDoc = <T = any,>(): {
             .then((document) => {
                 setLoading(false)
                 setIsCompleted(true)
+                keyInvalidator(invalidationConfig?.invalidateKeys || []);
                 return document
             })
             .catch((error) => {
@@ -433,9 +442,10 @@ export const useFrappeUpdateDoc = <T = any,>(): {
 
 /**
  * Hook to delete a document in the database and maintain loading and error states
+ * @param invalidationConfig - [Optional] InvalidationConfig options for invalidating cache using swr keys
  * @returns Object with the following properties: loading, error, isCompleted and deleteDoc and reset functions
  */
-export const useFrappeDeleteDoc = (): {
+export const useFrappeDeleteDoc = (invalidationConfig?: InvalidationConfig): {
     /** Function to delete a document in the database. Returns a promise which resolves to an object with message "ok" if successful */
     deleteDoc: (doctype: string, docname?: string | null) => Promise<{ message: string }>,
     /** Will be true when the API request is pending.  */
@@ -470,6 +480,7 @@ export const useFrappeDeleteDoc = (): {
             .then((message) => {
                 setLoading(false)
                 setIsCompleted(true)
+                keyInvalidator(invalidationConfig?.invalidateKeys || []);
                 return message
             })
             .catch((error) => {
@@ -617,9 +628,10 @@ export const useFrappePostCall = <T = any,>(method: string): {
 /**
  * 
  * @param method - name of the method to call (PUT request) (will be dotted path e.g. "frappe.client.set_value")
+ * @param invalidationConfig - [Optional] InvalidationConfig options for invalidating cache using swr keys
  * @returns an object with the following properties: loading, error, isCompleted , result, and call and reset functions
  */
-export const useFrappePutCall = <T = any,>(method: string): {
+export const useFrappePutCall = <T = any,>(method: string, invalidationConfig?: InvalidationConfig): {
     /** Function to call the method. Returns a promise which resolves to the data returned by the method */
     call: (params: Record<string, any>) => Promise<T>,
     /** The result of the API call */
@@ -661,6 +673,7 @@ export const useFrappePutCall = <T = any,>(method: string): {
                 setResult(message)
                 setLoading(false)
                 setIsCompleted(true)
+                keyInvalidator(invalidationConfig?.invalidateKeys || []);
                 return message
             })
             .catch((error) => {
@@ -1045,4 +1058,12 @@ export const useFrappeDocTypeEventListener = (
     }, [doctype]);
 
     useFrappeEventListener('list_update', onListUpdateCallback)
+}
+
+export const keyInvalidator = (keys?: string[] | null | undefined) => {
+    if (keys && Array.isArray(keys) && keys.length > 0) {
+        keys.forEach(key => {
+            mutate(key)
+        })
+    }
 }
