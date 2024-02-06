@@ -16,6 +16,8 @@ An extended React hooks library for the [Frappe Framework](https://frappeframewo
 
 - **Default SWR Configuration**: Enables global SWR configuration via `FrappeProvider` for streamlined cache management and polling.
 - **Real-time User Validation**: Improves the `useFrappeAuth` hook to support real-time user validation, ensuring user states are up-to-date.
+- **Invalidate Keys with Hooks**: Utilize hooks to invalidate SWR cache keys programmatically, allowing for fine-grained control over data revalidation.
+- **Manual Key Invalidator**: A feature that provides developers with a method to manually invalidate SWR cache keys, offering flexibility in managing the cache invalidation strategy.
 
 ## Default SWR Configuration
 Initialize `frappe-react-hooks` by wrapping your application's root component with `FrappeProvider`, specifying the URL of your Frappe server and default SWR configuration as needed:
@@ -50,6 +52,49 @@ function App() {
 const { currentUser } = useFrappeAuth({}, {realtimeUserValidation: true, method: // Optional custom user check method});
 ```
 This feature enhances security and maintains a consistent user experience by ensuring that user sessions are accurately managed.
+
+## Invalidate Keys with Hooks
+The `frappe-react-hooks` library allows for SWR cache invalidation directly through specific hooks upon successful API calls. By passing an invalidateKeys parameter containing an array of SWR keys, you can ensure that the specified keys are invalidated, and the related data is re-fetched to maintain data consistency across your application.
+
+#### Usage with Data Manipulation Hooks
+When performing create, update, or delete operations, you can specify invalidateKeys to refresh related data automatically.
+```bash
+const { createDoc } = useFrappeCreateDoc({
+  invalidateKeys: ['swrKey']
+});
+
+const { updateDoc } = useFrappeUpdateDoc({
+  invalidateKeys: ['swrKey']
+});
+
+const { deleteDoc } = useFrappeDeleteDoc({
+  invalidateKeys: ['swrKey']
+});
+```
+#### Usage with API Call Hooks
+Similar to data manipulation hooks, you can also invalidate cache keys after successful custom API calls.
+```bash
+const { call } = useFrappePostCall(method, {
+  invalidateKeys: ['swrKey']
+});
+
+const { call } = useFrappePutCall(method, {
+  invalidateKeys: ['swrKey']
+});
+
+const { call } = useFrappePutDelete(method, {
+  invalidateKeys: ['swrKey']
+});
+```
+
+## Manual Key Invalidator
+`frappe-react-hooks` offers a manual key invalidator function that provides explicit control over when and how SWR cache keys are invalidated. This functionality is essential for cases where developers need to enforce cache invalidation based on custom logic or external events.
+
+```bash
+import { keyInvalidator } from 'frappe-react-hooks';
+
+keyInvalidator(['swrKey1', 'swrKey2']);
+```
 
 ## Documentation
 For detailed API usage and guidelines, refer to the `frappe-react-sdk` [documentation](https://github.com/nikkothari22/frappe-react-sdk). `frappe-react-hooks` maintains compatibility with `frappe-react-sdk` while extending its capabilities.

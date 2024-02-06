@@ -563,7 +563,7 @@ export const useFrappeGetCall = <T = any,>(method: string, params?: Record<strin
  * @param method - name of the method to call (POST request) (will be dotted path e.g. "frappe.client.set_value")
  * @returns an object with the following properties: loading, error, isCompleted , result, and call and reset functions
  */
-export const useFrappePostCall = <T = any,>(method: string): {
+export const useFrappePostCall = <T = any,>(method: string, invalidationConfig?: InvalidationConfig): {
     /** Function to call the method. Returns a promise which resolves to the data returned by the method */
     call: (params: Record<string, any>) => Promise<T>,
     /** The result of the API call */
@@ -605,6 +605,7 @@ export const useFrappePostCall = <T = any,>(method: string): {
                 setResult(message)
                 setLoading(false)
                 setIsCompleted(true)
+                keyInvalidator(invalidationConfig?.invalidateKeys || []);
                 return message
             })
             .catch((error) => {
@@ -699,7 +700,7 @@ export const useFrappePutCall = <T = any,>(method: string, invalidationConfig?: 
  * @param method - name of the method to call (DELETE request) (will be dotted path e.g. "frappe.client.delete")
  * @returns an object with the following properties: loading, error, isCompleted , result, and call and reset functions
  */
-export const useFrappeDeleteCall = <T = any,>(method: string): {
+export const useFrappeDeleteCall = <T = any,>(method: string, invalidationConfig?: InvalidationConfig): {
     /** Function to call the method. Returns a promise which resolves to the data returned by the method */
     call: (params: Record<string, any>) => Promise<T>,
     /** The result of the API call */
@@ -741,6 +742,7 @@ export const useFrappeDeleteCall = <T = any,>(method: string): {
                 setResult(message)
                 setLoading(false)
                 setIsCompleted(true)
+                keyInvalidator(invalidationConfig?.invalidateKeys || []);
                 return message
             })
             .catch((error) => {
