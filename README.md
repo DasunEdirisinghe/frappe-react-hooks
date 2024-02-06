@@ -16,7 +16,7 @@ An extended React hooks library for the [Frappe Framework](https://frappeframewo
 
 - **Default SWR Configuration**: Enables global SWR configuration via `FrappeProvider` for streamlined cache management and polling.
 - **Real-time User Validation**: Improves the `useFrappeAuth` hook to support real-time user validation, ensuring user states are up-to-date.
-- **Invalidate Keys with Hooks**: Utilize hooks to invalidate SWR cache keys, allowing for fine-grained control over data revalidation.
+- **Invalidate cache with Hooks**: Utilize hooks to invalidate SWR cache keys, allowing for fine-grained control over data revalidation.
 - **Manual Key Invalidator**: A feature that provides developers with a method to manually invalidate SWR cache keys, offering flexibility in managing the cache invalidation strategy.
 
 ## Default SWR Configuration
@@ -53,7 +53,7 @@ const { currentUser } = useFrappeAuth({}, {realtimeUserValidation: true, method:
 ```
 This feature enhances security and maintains a consistent user experience by ensuring that user sessions are accurately managed.
 
-## Invalidate Keys with Hooks
+## Invalidate cache with Hooks
 The `frappe-react-hooks` library allows for SWR cache invalidation directly through specific hooks upon successful API calls. By passing an invalidateKeys parameter containing an array of SWR keys, you can ensure that the specified keys are invalidated, and the related data is re-fetched to maintain data consistency across your application.
 
 #### Usage with Data Manipulation Hooks
@@ -87,7 +87,7 @@ const { call } = useFrappeDeleteCall(method, {
 });
 ```
 
-## Manual Key Invalidator
+## Manual Cache Key Invalidator
 `frappe-react-hooks` offers a manual key invalidator function that provides explicit control over when and how SWR cache keys are invalidated. This functionality is essential for cases where developers need to enforce cache invalidation based on custom logic or external events.
 
 ```bash
