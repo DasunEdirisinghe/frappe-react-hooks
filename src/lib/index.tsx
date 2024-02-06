@@ -561,6 +561,7 @@ export const useFrappeGetCall = <T = any,>(method: string, params?: Record<strin
 /**
  * 
  * @param method - name of the method to call (POST request) (will be dotted path e.g. "frappe.client.set_value")
+ * @param invalidationConfig - [Optional] InvalidationConfig options for invalidating cache using swr keys   
  * @returns an object with the following properties: loading, error, isCompleted , result, and call and reset functions
  */
 export const useFrappePostCall = <T = any,>(method: string, invalidationConfig?: InvalidationConfig): {
@@ -698,6 +699,7 @@ export const useFrappePutCall = <T = any,>(method: string, invalidationConfig?: 
 /**
  * 
  * @param method - name of the method to call (DELETE request) (will be dotted path e.g. "frappe.client.delete")
+ * @param invalidationConfig - [Optional] InvalidationConfig options for invalidating cache using swr keys
  * @returns an object with the following properties: loading, error, isCompleted , result, and call and reset functions
  */
 export const useFrappeDeleteCall = <T = any,>(method: string, invalidationConfig?: InvalidationConfig): {
