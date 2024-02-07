@@ -226,6 +226,14 @@ export const getRequestURL = (doctype: string, url: string, docname?: string | n
     return requestURL;
 }
 
+export const keyInvalidator = (keys?: string[] | null | undefined) => {
+    if (keys && Array.isArray(keys) && keys.length > 0) {
+        keys.forEach(key => {
+            mutate(key)
+        })
+    }
+}
+
 /**
  * Hook to fetch a document from the database
  * 
@@ -1062,12 +1070,4 @@ export const useFrappeDocTypeEventListener = (
     }, [doctype]);
 
     useFrappeEventListener('list_update', onListUpdateCallback)
-}
-
-export const keyInvalidator = (keys?: string[] | null | undefined) => {
-    if (keys && Array.isArray(keys) && keys.length > 0) {
-        keys.forEach(key => {
-            mutate(key)
-        })
-    }
 }
