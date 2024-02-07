@@ -1,7 +1,7 @@
 {
   "name": "frappe-react-hooks",
   "description": "Extended version of frappe-react-sdk with more features and improvements",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "license": "MIT",
   "author": {
     "name": "Dasun Edirisinghe",
@@ -68,6 +68,7 @@
     "jsdom": "^20.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.0",
     "react-test-renderer": "^18.2.0",
     "typescript": "^4.6.4",
     "vite": "^3.2.6",

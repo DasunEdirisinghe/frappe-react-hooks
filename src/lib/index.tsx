@@ -226,12 +226,22 @@ export const getRequestURL = (doctype: string, url: string, docname?: string | n
     return requestURL;
 }
 
+
+/**
+ * A utility function that invalidates swrKey caches
+ * 
+ * 
+ * @param keys array of swrKeys for invalidation
+ */
 export const keyInvalidator = (keys?: string[] | null | undefined) => {
-    console.log("🚀 ~ keyInvalidator ~ keys:", keys)
     if (keys && Array.isArray(keys) && keys.length > 0) {
         keys.forEach(key => {
-            console.log("🚀 ~ keyInvalidator ~ key:", key)
+            try {
+                cache.delete(key)
             mutate(key)
+            } catch(err){
+                console.error("Cache invalidation error from frappe-react-hooks",err)
+            }
         })
     }
 }
