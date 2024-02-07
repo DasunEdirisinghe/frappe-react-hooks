@@ -227,8 +227,10 @@ export const getRequestURL = (doctype: string, url: string, docname?: string | n
 }
 
 export const keyInvalidator = (keys?: string[] | null | undefined) => {
+    console.log("🚀 ~ keyInvalidator ~ keys:", keys)
     if (keys && Array.isArray(keys) && keys.length > 0) {
         keys.forEach(key => {
+            console.log("🚀 ~ keyInvalidator ~ key:", key)
             mutate(key)
         })
     }
