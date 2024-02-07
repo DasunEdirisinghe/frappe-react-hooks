@@ -1,7 +1,7 @@
 {
   "name": "frappe-react-hooks",
   "description": "Extended version of frappe-react-sdk with more features and improvements",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "license": "MIT",
   "author": {
     "name": "Dasun Edirisinghe",
