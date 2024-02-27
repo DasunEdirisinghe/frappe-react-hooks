@@ -235,14 +235,14 @@ export const getRequestURL = (doctype: string, url: string, docname?: string | n
  */
 export const keyInvalidator = (keys?: string[] | null | undefined) => {
     if (keys && Array.isArray(keys) && keys.length > 0) {
-        keys.forEach(key => {
-            try {
-                cache.delete(key)
-            mutate(key)
-            } catch(err){
-                console.error("Cache invalidation error from frappe-react-hooks",err)
-            }
-        })
+        keys.forEach((k) => {
+			for (const key of cache.keys()) {
+				if (key.startsWith(k)) {
+					mutate(key)
+					cache.delete(key)
+				}
+			}
+		})
     }
 }
 
