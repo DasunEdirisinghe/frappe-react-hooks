@@ -1,4 +1,3 @@
-
 # frappe-react-hooks
 
 An extended React hooks library for the [Frappe Framework](https://frappeframework.com) backend, enhancing [frappe-react-sdk](https://github.com/nikkothari22/frappe-react-sdk) with additional functionalities and customizations for an optimized development experience in Frappe-powered applications.
