@@ -11,10 +11,12 @@ export default defineConfig({
       fileName: (format) => `frappe-react-hooks.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
       output: {
         globals: {
-          react: 'React'
+            'react-dom': 'ReactDom',
+            react: 'React',
+            'react/jsx-runtime': 'ReactJsxRuntime',
         }
       }
     }
